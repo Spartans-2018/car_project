@@ -3,6 +3,7 @@ from queryMarketCheck import Query
 from controller_car import Controller
 from DAO_car import Dao
 from program_manager import Manage_budget_data as MD
+from program_manager import Manage_new_car_search as NC
 
 from flask import Flask, jsonify, request, render_template
 import json
@@ -13,52 +14,7 @@ import time
 app = Flask(__name__, template_folder= 'ui\src\index.html')
 
 
-# @app.route('/search-car/<zip_code>/<year>/<make>/<model>/<state>', methods=['GET'])
-# def search_car(zip_code, year, make, model, state):
-    
-#     "Call on queryMarket to search for the car on Market Check API"
-    
-#     make_lst=make.split(',')
-#     if len(make_lst)==1:
-#         make=make_lst[0]
-#     else:
-#         make=''
-#         for i in range(len(make_lst)-1):
-#             make=make+str(make_lst[i])+'%2C'
 
-#         make=make+str(make_lst[len(make_lst)-1])
-
-#     model_lst=model.split(',')
-#     if len(model_lst)==1:
-#         model=model_lst[0]
-#     else:
-#         model=''
-#         for i in range(len(model_lst)-1):
-#             model=model+str(model_lst[i]+'%2C')
-#         model=model+str(model_lst[len(model_lst)-1])
-
-
-#     car_dict=Query().search(zip_code, year, make, model, state)
-
-#     time.sleep(20)
-#     Controller().handle_car_api_data(car_dict)
-    
-    
-#     car_data=jsonify(car_dict)
-#     return car_data
-
-# @app.route('/')
-# def test():
-#     return render_template("index.html")
-
-# @app.route('/result',methods = ['POST', 'GET'])
-# def result():
-    
-#     if request.method == 'POST'or 'GET':
-#       result = 'Hello World'
-      
-#       print ('Flask')
-#       return result
 
 
 @app.route('/search_make/<make>', methods= ['GET'])
@@ -68,14 +24,14 @@ def search_make (make):
         model=["Civic", "Accord"]
         print (model)
     elif make=='BMW':
-        model=['328', '535']
+        model=["3 Series", "5 Series", 'X3', 'X5']
         print(model)
     elif make=='Audi':
-        model=['A4', 'A6']
+        model=['A4', 'A6', 'Q5', 'Q7']
         print(model)
 
     elif make=='Toyota':
-        model=['Corolla', 'Camry']
+        model=['Corolla', 'Camry', 'RAV4']
 
     elif make== 'Nissan':
         model= ['Sentra', 'Altima']
@@ -151,7 +107,7 @@ def search_car1(zip_code, from_year, to_year, make, model):
             car_dict=Query().search2(zip_code_list[i],year, make_list[i], model_list[i])
             p=p+1
             Controller().handle_data(car_dict, zip_code_list[i]) 
-            time.sleep(2)
+            # time.sleep(2)
 
 
     
@@ -159,30 +115,46 @@ def search_car1(zip_code, from_year, to_year, make, model):
 
     return graph_data
 
-@app.route('/search-budget/<budget>/<car_type>/<milieage>/<zip_code>', methods=['GET'])
-def budget_search(budget, car_type, milieage, zip_code):
+@app.route('/search-budget/<budget>/<car_type>/<milieage>/<zip_code>/<color>', methods=['GET'])
+def budget_search(budget, car_type, milieage, zip_code, color):
 
-    budget_range_tup=(int(budget)-500, int(budget)+500)
-    budget_range_str= str(budget_range_tup[0]) +'-'+str(budget_range_tup[1])
-    milieage_range_str='0'+ milieage
+    # budget_range_tup=(int(budget)-500, int(budget)+500)
+    # budget_range_str= str(budget_range_tup[0]) +'-'+str(budget_range_tup[1])
+    # milieage_range_str='0'+ milieage
 
-    budget_dict=Query.budget_search(budget_range_str, car_type, milieage_range_str, zip_code)
-
-
-    # budget_data=jsonify(budget_dict)
+    # budget_dict=Query.budget_search(budget_range_str, car_type, milieage_range_str, zip_code, color)
+   
     # return budget_data
 
-    budget_data=MD().sort_mileage(budget_dict)
+   # budget_data=MD().sort_mileage(budget_dict)
+
+   
+    budget_dict= MD().budget_search_manager(budget, car_type, milieage, zip_code, color)
+    budget_data= jsonify(budget_dict)
+
+    # with open('./ui/src/js/components/car_data1.json', 'w' ) as fp:
+    #     json.dump(budget_dict['listings'], fp)
 
     return budget_data
+
+
+
+
+@app.route('/search-newcar/<make>/<model>/<zip_code>', methods= ['GET'])
+def new_car_search(make, model, zip_code):
+
+    new_car_graph_data= NC().new_car_years(make, model, zip_code)
+    
+    
+    
+    return new_car_graph_data
+
     
 
 
   
 
 
-    
-   
 
 
 if __name__ == "__main__":

@@ -7,6 +7,8 @@ class Service {
         this.url3='/api/search-car/'
         this.url4='/api/search-cars/'
         this.url5='/api/search-budget/'
+        this.url6= '/api/search-newcar/'
+        this.url7= '/api/search-budget/anymileage/'
     }
     /**-
      * Making a remote call using promises
@@ -37,21 +39,32 @@ completeMake(zipcode, fromyear, toyear, make, model){
     })
 }
 
-budget(zipcode, carType, milieage, budget){
-    return fetch(this.url5+ zipcode+'/'+carType+'/'+milieage+'/'+budget)
+budget(zipcode, carType, milieage, budget, color){
+    return fetch(this.url5+ zipcode+'/'+carType+'/'+milieage+'/'+budget+'/'+color)
+    .then((response)=>{
+        return response.json()
+    })
+}
+budgetAnyMileage(zipcode, carType, budget, color){
+    return fetch(this.url7+ zipcode+'/'+carType+'/'+'/'+budget+'/'+color)
     .then((response)=>{
         return response.json()
     })
 }
 
+newCarSearch(make, model, zipcode){
+    return fetch(this.url6 +make+'/'+model +'/'+ zipcode)
+        .then(response =>{
+            return response.json()
+        })
+    
+}
 
 
 
 
 
 }
-
-
 
 
      

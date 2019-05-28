@@ -101,8 +101,8 @@ class Dao:
         # plt.show()
         graph_dict= {'x1': prices_car1, 'y1':years_car1, 
                     'x2': prices_car2, 'y2':years_car2,
-                    'mm1':make_list[0]+','+ model_list[0],
-                    'mm2':make_list[1]+','+ model_list[1],
+                    'makeModel1':make_list[0]+', '+ model_list[0],
+                    'makeModel2':make_list[1]+', '+ model_list[1],
                     }
     
         graph_data=json.dumps(graph_dict)

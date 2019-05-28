@@ -5978,36 +5978,40 @@ dict1= {
   }
 }
 
-# print (len(dict1['listings']))
+print (type(dict1['listings']))
+print (dict1['listings'][0]['build']['make'])
+
+print(dict1['listings'][0]['id'])
 
 
 # print (dict1['listings'][0]['miles'])
 
-list_of_dicts=dict1['listings']
-list_of_dicts.sort(key=operator.itemgetter('miles'))
-five_car_list=[]
+# list_of_dicts=dict1['listings']
+# list_of_dicts.sort(key=operator.itemgetter('miles'))
+# five_car_list=[]
 
 
-for i in range(5):
-  try:
-    #print(list_of_dicts[i]['build']['make'], list_of_dicts[i]['build']['model'], list_of_dicts[i]['price'], list_of_dicts[i]['miles'])
+# for i in range(5):
+#   try:
+#     #print(list_of_dicts[i]['build']['make'], list_of_dicts[i]['build']['model'], list_of_dicts[i]['price'], list_of_dicts[i]['miles'])
     
-    five_car_dict={'make':list_of_dicts[i]['build']['make'],
-                    'model': list_of_dicts[i]['build']['model'],
-                    'price': list_of_dicts[i]['price'],
-                    'mileage': list_of_dicts[i]['miles'],
-                    'photo': list_of_dicts[i]['media']['photo_links'][0]
-                  }
-    five_car_list.append(five_car_dict)
-  except:
-    continue
+#     five_car_dict={'make':list_of_dicts[i]['build']['make'],
+#                     'model': list_of_dicts[i]['build']['model'],
+#                     'price': list_of_dicts[i]['price'],
+#                     'mileage': list_of_dicts[i]['miles'],
+#                     'photo': list_of_dicts[i]['media']['photo_links'][0]
+#                   }
+#     five_car_list.append(five_car_dict)
+#   except:
+#     continue
 
   
  
-#print (five_car_list)
+# #print (five_car_list)
 
-five_car_data= json.dumps(five_car_list)
+# five_car_data= json.dumps(five_car_list)
 
-print (five_car_data)
+# print (five_car_data)
 
-  
+with open('./python_files/test/car_data1.json', 'w' ) as fp:
+  json.dump(dict1, fp)
